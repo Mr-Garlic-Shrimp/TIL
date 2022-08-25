@@ -87,7 +87,7 @@ print("x=", x)
   t = ("Mike","Nancy")
   say_something("Hi!", *t) #　タプルでまとめて引数を渡すときもアスタリスクを使う
 
-  * キーワード引数は*kwargsを使うことで、辞書型で受け取れる。
+  * **kwargsを使うことで、辞書型で引数を受け取れる。
   キーワード引数を辞書型で受け取る
       def menu(**kwargs):
           # print kargs
@@ -100,6 +100,7 @@ print("x=", x)
           "dessert": "ice"
       }
       menu(**d)
+      
   * 上記の引数の受け取り方、渡し方は全て混ぜて使うことができる
 
 # クロージャ
