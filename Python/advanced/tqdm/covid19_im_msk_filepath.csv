@@ -1,0 +1,10 @@
+path_im,filename,path_msk
+../../sample_data/public_covid_data/rp_im/4.nii,4.nii,../../sample_data/public_covid_data/rp_msk/4.nii
+../../sample_data/public_covid_data/rp_im/1.nii,1.nii,../../sample_data/public_covid_data/rp_msk/1.nii
+../../sample_data/public_covid_data/rp_im/8.nii,8.nii,../../sample_data/public_covid_data/rp_msk/8.nii
+../../sample_data/public_covid_data/rp_im/9.nii,9.nii,../../sample_data/public_covid_data/rp_msk/9.nii
+../../sample_data/public_covid_data/rp_im/6.nii,6.nii,../../sample_data/public_covid_data/rp_msk/6.nii
+../../sample_data/public_covid_data/rp_im/5.nii,5.nii,../../sample_data/public_covid_data/rp_msk/5.nii
+../../sample_data/public_covid_data/rp_im/7.nii,7.nii,../../sample_data/public_covid_data/rp_msk/7.nii
+../../sample_data/public_covid_data/rp_im/3.nii,3.nii,../../sample_data/public_covid_data/rp_msk/3.nii
+../../sample_data/public_covid_data/rp_im/2.nii,2.nii,../../sample_data/public_covid_data/rp_msk/2.nii
