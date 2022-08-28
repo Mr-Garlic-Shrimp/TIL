@@ -3,6 +3,7 @@ import pandas as pd
 from glob import glob
 import nibabel as nib
 import os
+import matplotlib.pyplot as plt
 
 
 # このモジュール内でしか呼ばれないような関数をプライベート関数といい、アンダースコアで明示する
@@ -80,3 +81,21 @@ def overlay(gray_volume, mask_volume, mask_color, alpha):
                          gray_volume)
     
     return overlayed
+
+
+def vis_overlay(overlayed, cols=5, display_num=25, figsize=(15, 15)):
+    rows = (display_num - 1) // cols + 1
+    total_num = overlayed.shape[-2]
+    # 表示するスライスの間隔を設定。総スライス数よりも表示枚数が多い場合、1未満になるので、このときは1とする。
+    interval = total_num / display_num
+    if interval < 1:
+        interval = 1
+    
+    fig, ax = plt.subplots(rows, cols, figsize=figsize)
+    # 行列のインデックスはリストのiをカラム数で割った商と余りになる。
+    for i in range(display_num):
+        idx = int(i * interval)
+        # idxがtotal_num以上になると、out of indexになるのでbreakする。
+        if idx >= total_num:
+            break
+        ax[i//cols, i%cols].imshow(overlayed[:, :, idx])
