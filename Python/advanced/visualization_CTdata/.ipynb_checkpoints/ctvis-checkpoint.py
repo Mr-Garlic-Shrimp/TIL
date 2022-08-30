@@ -83,9 +83,13 @@ def overlay(gray_volume, mask_volume, mask_color, alpha):
     return overlayed
 
 
-def vis_overlay(overlayed, cols=5, display_num=25, figsize=(15, 15)):
+def vis_overlay(overlayed, original_volume, mask_volume, 
+                cols=5, display_num=25, figsize=(15, 15)):
     rows = (display_num - 1) // cols + 1
     total_num = overlayed.shape[-2]
+    '''
+    CTデータとマスクデータを重ね合わせたプロットを表示する
+    '''
     # 表示するスライスの間隔を設定。総スライス数よりも表示枚数が多い場合、1未満になるので、このときは1とする。
     interval = total_num / display_num
     if interval < 1:
@@ -94,8 +98,41 @@ def vis_overlay(overlayed, cols=5, display_num=25, figsize=(15, 15)):
     fig, ax = plt.subplots(rows, cols, figsize=figsize)
     # 行列のインデックスはリストのiをカラム数で割った商と余りになる。
     for i in range(display_num):
+        row_i = i//cols
+        col_i = i%cols
         idx = int(i * interval)
         # idxがtotal_num以上になると、out of indexになるのでbreakする。
         if idx >= total_num:
             break
-        ax[i//cols, i%cols].imshow(overlayed[:, :, idx])
+        # HUの統計量情報を取得 
+        # 各スライスごとに統計量を求めたいのでidxを指定して渡す。
+        stats = get_hu_stats(original_volume[:, :, idx], 
+                               mask_volume[:, :, idx])
+        title = 'slice #: {}'.format(idx)
+        title += '\nggo mean: {:.0f}±{:.0f}'.format(stats['ggo_mean'],stats['ggo_std'])
+        title += '\nconsoli mean: {:.0f}±{:.0f}'.format(stats['consolidation_mean'],stats['consolidation_std'])
+        title += '\neffusion mean: {:.0f}±{:.0f}'.format(stats['effusion_mean'],stats['effusion_std'])
+        ax[row_i, col_i].imshow(overlayed[:, :, idx])
+        # タイトルをつけて軸を消す
+        ax[row_i, col_i].set_title(title)
+        ax[row_i, col_i].axis('off')
+        
+    # すっきりさせる
+    fig.tight_layout()
+        
+# volume,mask_volumeは3次元でも2次元（スライス指定）でも動く。
+def get_hu_stats(volume, 
+                 mask_volume,
+                label_dict={1: 'ggo', 2: 'consolidation', 3: 'effusion'}):
+    # 統計量格納用辞書を定義
+    result = {}
+
+    for label in label_dict.keys():
+        # label(key)に対応するvalueがprefix(統計量につける接頭辞)に入る
+        prefix = label_dict[label]
+        # mask値でvolumeをフィルタリング
+        roi_hu = volume[np.equal(mask_volume, label)]
+        result[prefix + '_mean'] = np.mean(roi_hu)
+        result[prefix + '_std'] = np.std(roi_hu)
+        
+    return result
