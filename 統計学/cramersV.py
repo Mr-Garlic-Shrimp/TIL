@@ -8,8 +8,10 @@ def cramers_v(x, y):
     y: array like
     return: Cramers's V(float)
     '''
-    
+    # 引数の配列から分割表を作成
     cont_table = pd.crosstab(x, y)
-    chi, _, _, ex = stats.chi2_contingency(cont_table, correction=False)
-    
-    return np.sqrt(chi/((np.min(cont_table.shape)-1)*ex.sum()))
+    # カイ二乗値と期待度数の分割表のみ取得
+    chi2, _, _, ex = stats.chi2_contingency(cont_table, correction=False)
+    n = ex.sum()
+    min_table_shape = np.min(cont_table.shape)-1
+    return np.sqrt(chi2/(min_table_shape*n))
