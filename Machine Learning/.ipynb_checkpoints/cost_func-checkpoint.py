@@ -11,6 +11,8 @@ def cost_func(theta, target_var, features):
     """
     # サンプルデータ数を定義
     m = len(target_var)
+    # 1行m列の単位行列を定義
+    ones  = np.ones((1, m))
     # MSE（残差の二乗和の平均）の計算
     mse = np.power( (target_var - (theta[0] + theta[1] * features)) , 2 ) / m
     return np.sum(mse)
