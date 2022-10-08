@@ -1,6 +1,5 @@
 import numpy as np
 
-# インターフェースは2次元配列で統一する。
 def cost_func(theta, target_var, features):
     """
     args:
@@ -28,8 +27,7 @@ def cost_func(theta, target_var, features):
     
     # 残差の二乗の計算
     sq_errors = (target_var_matrix - np.dot(ones_features.T, theta.T)) ** 2
-    # mseの算出
-    mse = np.mean(sq_errors)
-    return mse
+    # mseを返す
+    return np.mean(sq_errors)
     
     
