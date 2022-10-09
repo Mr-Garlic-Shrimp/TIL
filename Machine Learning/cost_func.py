@@ -2,15 +2,15 @@
 # 変更履歴
 # 10/7 実装。
 # 10/8 thetaをリストで渡せるようにcost_funcを修正した。
+# 10/9 パラメータを2Darrayで受け取るように変更。パラメタの全組み合わせの配列生成は必要に応じて関数外で行う実装とする。
 # ---------------------------------------------------
 
 import numpy as np
-from itertools import product
 
-def cost_func(theta, target_var, features):
+def cost_func(theta_array, target_var, features):
     """
     args:
-        theta: List of 1Darrays.Parametes of regression.
+        theta: 2Darrays.Parametes of regression.
         target_var: 1Darray.Target variable.
         features: 2Darray.Feature values.
     return values of cost function
@@ -19,9 +19,6 @@ def cost_func(theta, target_var, features):
     if len(target_var) != len(features):
         print("Error: Invalid args")
         exit()
-        
-    # パラメータの全組み合わせをリスト化し、配列に変換
-    theta_array = np.array(list(product(*theta)))
     
     # featuresが1次元配列であれば、1行m列の2次元配列にする
     # そうでなければ転置する
