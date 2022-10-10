@@ -10,7 +10,7 @@ import numpy as np
 def cost_func(theta_array, target_var, features):
     """
     args:
-        theta: 2Darrays.Parametes of regression.
+        theta: 2Darray.Parametes of regression.
         target_var: 1Darray.Target variable.
         features: 2Darray.Feature values.
     return values of cost function
