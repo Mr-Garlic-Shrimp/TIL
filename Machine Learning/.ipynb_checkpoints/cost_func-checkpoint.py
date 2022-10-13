@@ -33,7 +33,7 @@ def cost_func(theta_array, target_var, features):
     # 特徴量の配列の1行目にonesを結合
     features_array = np.concatenate([ones,features])
     
-    # 残差の二乗の計算。線形回帰モデルの式を内積で表している。
+    # 残差の二乗の計算。線形回帰モデルの式を行列の積で表している。
     sq_errors = (target_var - np.dot(theta_array, features_array)) ** 2
     # mseを返す
     return sq_errors.mean(axis=1)
