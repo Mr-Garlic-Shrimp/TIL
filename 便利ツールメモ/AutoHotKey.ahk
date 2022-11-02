@@ -10,25 +10,6 @@ Space & i:: Send,{Blind}{PgUp}
 Space & o:: Send,{Blind}{End}
 Space:: Send,{Blind}{Space}
 
-Space & ,::MouseClick, Left,,,,,D
-Space & m::MouseClick, Left,,,,,
-Space & .::MouseClick, Right
-Space & n::MouseClick, WheelUp
-Space & /::MouseClick, WheelDown
-
-;「スペース＋左側のキー」が押されたらマウスカーソルを移動させる
-Space & z::MouseMove 0, -20, 0, R
-Space & w::MouseMove 0, -150, 0, R
-
-Space & x::MouseMove 0, 20, 0, R
-Space & s::MouseMove 0, 150, 0, R
-
-Space & a::MouseMove -150, 0, 0, R
-Space & q::MouseMove -20, 0, 0, R
-
-Space & d::MouseMove 150, 0, 0, R
-Space & e::MouseMove 20, 0, 0, R
-
 ;「スペース＋セミコロン／コロン」が押されたらバックスペース・デリートが押されたことにする
 Space & `;:: Send,{Blind}{BS}
 Space & ':: Send,{Blind}{Delete}
@@ -37,9 +18,63 @@ Space & ':: Send,{Blind}{Delete}
 Space & f:: Send,{Blind}{vkF3sc029} 
 
 
+;
+F12 & o::MouseClick, Left,,,,,D
+F12 & o UP::MouseClick, Left,,,,,U
+F12 & [::MouseClick, Right
+F12 & .::MouseClick, WheelUp
+F12 & /::MouseClick, WheelDown
+
+;「スペース＋左側のキー」が押されたらマウスカーソルを移動させる
+;F12 & p::MouseMove 0, -20, 0, R
+;F12 & `;::MouseMove 0, 20, 0, R
+;F12 & l::MouseMove -20, 0, 0, R
+;F12 & '::MouseMove 20, 0, 0, R
+
+F12 & p::
+If GetKeyState("Ctrl", "P") {
+                MouseMove 0, -200, 0, R
+              }else{
+                MouseMove 0, -20, 0, R
+              }
+Return
+
+F12 & `;::
+If GetKeyState("Ctrl", "P") {
+                MouseMove 0, 200, 0, R
+              }else{
+                MouseMove 0, 20, 0, R
+              }
+Return
+
+F12 & l::
+If GetKeyState("Ctrl", "P") {
+                MouseMove -200, 0, 0, R
+              }else{
+                MouseMove -20, 0, 0, R
+              }
+Return
+
+F12 & '::
+If GetKeyState("Ctrl", "P") {
+                MouseMove 200, 0, 0, R
+              }else{
+                MouseMove 20, 0, 0, R
+              }
+Return
+
+
+
+
+
 ;↓多分もうつかわないやつ
 
 /*
+Space & z::MouseMove 0, -100, 0, R
+Space & x::MouseMove 0, 100, 0, R
+Space & q::MouseMove -100, 0, 0, R
+Space & d::MouseMove 20, 0, 0, R
+
 Space & k::
 If GetKeyState("Ctrl", "P") {
                 MouseMove 0, -10, 0, R
