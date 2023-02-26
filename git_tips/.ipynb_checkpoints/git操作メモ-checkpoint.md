@@ -1,5 +1,21 @@
 # Git操作メモ
 
+## ある時点での作業ツリーの状態に戻したいとき
+* 戻したいコミット時点の位置にHEAD（今自分が作業している場所を示すポインタ）を戻す。
+* HEADの移動履歴は、git reflogで確認できる。  
+  戻したい時点でのHEADの位置を確認したら、下記コマンドでHEADの位置を戻す。（下例ではHEAD@{1}）  
+      ```
+      git reset --hard HEAD@{1}
+      ```  
+  ※「git reset –hard」 は、参照、作業ツリー、インデクスを強制的に戻すコマンド　　
+  
+参考：  
+https://codeclub965.com/?p=1815  
+https://qiita.com/ymzkjpx/items/00ff664da60c37458aaa
+
+
+
+
 ## git pushをするときにパスワード聞かれるのがだるいとき
 * git clone git@github.com:{user-name}/リポジトリ名　でSSH方式でクローンし直すと聞かなくなる。（githubにssh-keyを登録していることが前提）
 
