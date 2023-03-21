@@ -2,41 +2,38 @@ import pandas as pd
 import numpy as np
 from sklearn import tree
 
-class GradientBoostingDecisionTreeRegressor:
-    def __init__(self, learning_rate=0.1, n_iteration=100, max_depth=1, random_seed=0):
+class MyGradientBoostingDecisionTreeRegressor:
+    def __init__(self, learning_rate=0.03, n_iteration=100, max_depth=1, random_state=0):
         self.learning_rate = learning_rate
         self.n_iteration = n_iteration
         self.max_depth = max_depth
-        self.random_seed = random_seed
+        self.random_state = random_state
     
     def fit(self, X, y):
-        # 学習データをnumpyに変換
-        # X = np.array(X)
-        # y = np.array(y)
-
         # 最初のモデルと残差を定義。最初は目的変数yの平均値を予測値とする。
         # self.f0 = np.full((len(y),1), np.mean(y))　→ yを2次元にする必要はなし
+        # 下記では全要素がy.mean()の配列fを作成しているが、スカラーのままでもブロードキャストされるので問題ない。
         self.y_mean = y.mean()
-        self.f = np.full(len(y), y.mean())
-        self.r = y - self.f
+        f = np.full(len(y), y.mean())
+        r = y - f
         # 学習済みモデル格納用
         self.models = []
 
-        for _ in range(1, self.n_iteration):
+        for _ in range(self.n_iteration):
             # 決定木のインスタンス生成、学習、学習済みモデル格納
-            self.model = tree.DecisionTreeRegressor(max_depth=self.max_depth, random_state=self.random_seed)
-            self.model.fit(X, self.r)
-            self.models.append(self.model)
+            model = tree.DecisionTreeRegressor(max_depth=self.max_depth, random_state=self.random_state)
+            model.fit(X, r)
+            self.models.append(model)
             # それまでの予測結果とこのモデルの予測結果を足し合わせる
-            self.f += self.learning_rate * self.model.predict(X)
+            f += self.learning_rate * model.predict(X)
             # 残差を更新
-            self.r = self.r - self.f
-
+            r = y - f
             
     def predict(self, X_test):
         # 初期の予測値はテストデータと同じシェイプにする必要あり。
-        result = np.full(len(X_test), self.y_mean)
+        result = self.y_mean
         for model in self.models:
             result += self.learning_rate * model.predict(X_test)
 
         return result
+
