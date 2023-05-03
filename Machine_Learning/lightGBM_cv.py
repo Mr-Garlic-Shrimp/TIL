@@ -8,8 +8,8 @@ def lightGBM_classifier_cv_func(X, y, cv, params, num_boost_round=1000, stopping
     LightGBMで分類タスクの場合のCV回すための関数。
     評価指標は一旦logloss固定。
 
-    X: features
-    y: target
+    X(Pandas DataFrame): features.
+    y(Pandas DataFrame): target
     cv: k-Fold CV instance
     '''
 
@@ -17,8 +17,8 @@ def lightGBM_classifier_cv_func(X, y, cv, params, num_boost_round=1000, stopping
     verbose_eval = verbose_eval
 
     for train_index, test_index in cv.split(X):
-        X_train, X_val = X[train_index], X[test_index]
-        y_train, y_val = y[train_index], y[test_index]
+        X_train, X_val = X.iloc[train_index], X.iloc[test_index]
+        y_train, y_val = y.iloc[train_index], y.iloc[test_index]
         
         # LightGBM 用のデータセットを作成
         lgb_train = lgb.Dataset(X_train, y_train)
