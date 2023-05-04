@@ -2,7 +2,7 @@ import numpy as np
 import lightgbm as lgb
 from sklearn.metrics import log_loss
 
-def lightGBM_classifier_cv_func(X, y, cv, pipeline=None, params=None, num_boost_round=1000, stopping_rounds=10, verbose_eval=0):
+def lightGBM_classifier_cv_func(X, y, cv, ct=None, params=None, num_boost_round=1000, stopping_rounds=10, verbose_eval=0):
 
     '''
     LightGBMで分類タスクの場合のCV回すための関数。
@@ -11,7 +11,7 @@ def lightGBM_classifier_cv_func(X, y, cv, pipeline=None, params=None, num_boost_
     X(Pandas DataFrame): features.
     y(Pandas DataFrame): target
     cv: k-Fold CV instance
-    pipeline: 欠損値対応や標準化する際のpipeline
+    ct: 欠損値対応や標準化する際のcolumns transformer
     '''
 
     scores = []
@@ -21,18 +21,18 @@ def lightGBM_classifier_cv_func(X, y, cv, pipeline=None, params=None, num_boost_
         X_train, X_val = X.iloc[train_index], X.iloc[test_index]
         y_train, y_val = y.iloc[train_index], y.iloc[test_index]
         
+        # 前処理：欠損値対応、ダミー変数変換の処理等。X_valはtransformのみで良いことに注意。
+        # もしctに何も入れないと前処理はスキップされるので注意。
+        if ct is not None:
+            X_train = ct.fit_transform(X_train)
+            X_val = ct.transform(X_val)
+
         # LightGBM 用のデータセットを作成
         lgb_train = lgb.Dataset(X_train, y_train)
         # valデータとして使うDatasetにはreferenceに学習データを指定する必要がある。
         lgb_eval = lgb.Dataset(X_val, y_val, reference=lgb_train)
 
-
-        if pipeline is not None:
-            callbacks = [lgb.early_stopping(stopping_rounds=stopping_rounds), lgb.log_evaluation()]
-            model = pipeline.fit(X_train, y_train, model__eval_set=lgb_eval, model__callbacks=callbacks)
-
-
-        # モデルの学習
+        # # モデルの学習
         model = lgb.train(params,
                         lgb_train,
                         num_boost_round=num_boost_round,
