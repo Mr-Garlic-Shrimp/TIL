@@ -1,8 +1,8 @@
 import numpy as np
 import lightgbm as lgb
-from sklearn.metrics import log_loss
+from sklearn.metrics import log_loss, accuracy_score
 
-def lightGBM_classifier_cv_func(X, y, cv, ct=None, params=None, num_boost_round=1000, stopping_rounds=10, verbose_eval=0):
+def lightGBM_classifier_cv_func(X, y, cv, ct=None, params=None, num_boost_round=1000, stopping_rounds=10, verbose_eval=0, score_metric='log_loss'):
 
     '''
     LightGBMで分類タスクの場合のCV回すための関数。
@@ -12,6 +12,7 @@ def lightGBM_classifier_cv_func(X, y, cv, ct=None, params=None, num_boost_round=
     y(Pandas DataFrame): target
     cv: k-Fold CV instance
     ct: 欠損値対応や標準化する際のcolumns transformer
+    
     '''
 
     scores = []
@@ -23,8 +24,9 @@ def lightGBM_classifier_cv_func(X, y, cv, ct=None, params=None, num_boost_round=
         
         # 前処理：欠損値対応、ダミー変数変換の処理等。X_valはtransformのみで良いことに注意。
         # もしctに何も入れないと前処理はスキップされるので注意。
+        # Target Encodingを使う場合に備えて、fitでは目的変数も入れる。
         if ct is not None:
-            X_train = ct.fit_transform(X_train)
+            X_train = ct.fit_transform(X_train, y_train)
             X_val = ct.transform(X_val)
 
         # LightGBM 用のデータセットを作成
@@ -47,9 +49,17 @@ def lightGBM_classifier_cv_func(X, y, cv, ct=None, params=None, num_boost_round=
         # 予測結果のクラスにしたい場合は.argmax(axis=1)で行ごとに見て最大値をとるカラムのインデックスを返せばよい。
         y_pred_proba = model.predict(X_val, num_iteration=model.best_iteration)#.argmax(axis=1)
 
-        # 評価スコア（logloss）の計算
-        score = log_loss(y_val, y_pred_proba)
-        scores.append(score)
+        if score_metric=='log_loss':
+            # 評価スコア（logloss）の計算
+            score = log_loss(y_val, y_pred_proba)
+            scores.append(score)
+        elif score_metric=='accuracy':
+            # 評価スコア（accuracy）の計算
+            threshold = 0.5
+            # 確率を0,1に変換。閾値は一旦0.5で固定。
+            y_pred_label = np.where(y_pred_proba >= threshold, 1, 0)
+            score = accuracy_score(y_val, y_pred_label)
+            scores.append(score)
 
     # CVの評価結果を返す。
     return scores
