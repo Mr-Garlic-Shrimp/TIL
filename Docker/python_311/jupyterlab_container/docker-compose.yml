@@ -1,0 +1,22 @@
+version: "3.11"
+services:
+  jupyter:
+    build:
+      context: ./jupyter
+      dockerfile: Dockerfile
+    restart: always
+    entrypoint: >
+      jupyter-lab
+      --allow-root
+      --ip=0.0.0.0
+      --port=9000
+      --no-browser
+      --NotebookApp.token=''
+      --notebook-dir=/workspace
+    expose:
+      - "9000"
+    ports:
+      - "0.0.0.0:9000:9000"
+    volumes:
+      - ./jupyter/jupyter-config:/root/.jupyter
+      - ./work:/workspace
