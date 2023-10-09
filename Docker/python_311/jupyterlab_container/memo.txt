@@ -1,0 +1,5 @@
+#Dockerfileからイメージをビルドしたときのコマンド
+docker image build -t python_3.11:v1 .
+
+#Docker compose使わずにイメージからコンテナ立てる場合のコマンド
+docker run -v ~/work/git_work:/work -p 8888:8888 --name my-env_py311 python_3.11:v1
