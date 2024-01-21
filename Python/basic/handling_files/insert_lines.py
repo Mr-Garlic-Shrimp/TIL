@@ -26,7 +26,7 @@ with open(file, encoding='UTF-8') as f:
     footer = [lines[-1]]
 
 
-# 挿入する対象のデータを定義
+# 挿入する対象のデータを格納する変数を定義
 insert_lines = []
 
 # 挿入したい回数分だけ複製
@@ -43,8 +43,8 @@ for i, line in enumerate(lines):
     # 各行をカンマで区切る。
     splited_part = line.split(",")[-1]
     
-    # 通番を編集
-    lines[i] = line[:-16] + splited_part[:5] + str(i+1).rjust(3) + splited_part[7:]
+    # 通番を編集。通番部分は５桁でスペースパディング
+    lines[i] = line[:-16] + splited_part[:4] + str(i+1).rjust(5) + splited_part[9:]
 
 
 # ヘッダーとフッターを追加
