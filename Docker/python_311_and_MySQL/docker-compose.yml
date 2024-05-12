@@ -1,0 +1,41 @@
+version: "3.11"
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: <Password>
+    expose:
+      - "3306"
+    ports:
+      - "0.0.0.0:3306:3306"
+    networks:
+      - mynetwork
+    volumes:
+      - ./test_volume:/var/lib/mysql 
+
+
+  jupyterlab:
+    image: python_3.11:v2
+    networks:
+      - mynetwork
+    restart: always
+    entrypoint: >
+      jupyter-lab
+      --allow-root
+      --ip=0.0.0.0
+      --port=9000
+      --no-browser
+      --NotebookApp.token=''
+      --notebook-dir=/workspace
+    expose:
+      - "9000"
+    ports:
+      - "9000:9000"  # 0.0.0.0は通常省略可能
+    volumes:
+      - ./jupyter/jupyter-config:/root/.jupyter
+      - <host_work_dir>:/workspace
+
+networks:
+  mynetwork:
+    driver: bridge
+
