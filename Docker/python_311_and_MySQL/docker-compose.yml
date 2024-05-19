@@ -15,7 +15,7 @@ services:
 
 
   jupyterlab:
-    image: python_3.11:v2
+    image: python_3.11:v3
     networks:
       - mynetwork
     restart: always
