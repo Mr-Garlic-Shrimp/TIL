@@ -14,7 +14,10 @@ https://codeclub965.com/?p=1815
 https://qiita.com/ymzkjpx/items/00ff664da60c37458aaa
 
 
+## 特定ファイルに対してまだgit addしていない変更を取り消す
+> git checkout HEAD <FILE_NAME>
 
+参考：  https://www-creators.com/archives/1290
 
 ## git pushをするときにパスワード聞かれるのがだるいとき
 * git clone git@github.com:{user-name}/リポジトリ名　でSSH方式でクローンし直すと聞かなくなる。（githubにssh-keyを登録していることが前提）
