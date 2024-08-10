@@ -28,4 +28,29 @@ x = 100000000; // -> 100,000,000として解釈される。
 var price = parseInt("百円"); //文字列をintにしようとしてNaNになる。
 //console.log(price)
 // NaNは等号比較で常にfalseになる
-console.log(NaN == NaN);
+//console.log(NaN == NaN); -> 常にFalse。警告されるが、コンパイルは通る。
+// =============== String型 =================
+console.log("=============== string型 =================");
+// ダブルクォート入りの文字列を表現する場合、ダブルクォートの前に\でエスケープする必要あり。
+var str = "He said \"madam, I'm Adam.\"";
+// バッククォートで囲んだ場合、テンプレートリテラルが使用可能。
+// 文字列の途中で改行と式の挿入が可能になる。
+var count = 10;
+console.log("\u73FE\u5728\u3001\n    ".concat(count, "\u540D\u304C\u898B\u3066\u3044\u307E\u3059\u3002\n"));
+// 数式も可能。PythonのFstringみたいな感じ
+console.log("\n    \u7A0E\u8FBC\u307F".concat(Math.floor(100 * 1.1), "\u5186\n"));
+// 文字列結合。Pythonと同じ
+console.log("ID" + "_" + "001");
+// =============== undefined型 =================
+console.log("=============== undefined型 =================");
+// undefinedは未定義を表すプリミティブな値を表す。
+// 変数に値がセットされていないとき、戻り値が無い関数、オブジェクトに存在しないプロパティに
+// アクセスしたとき、配列に存在しないインデックスでアクセスしたときなどに現れる
+var Name;
+console.log(Name);
+function func() { }
+console.log(func());
+undefined;
+var arr = [];
+console.log(arr[1]);
+undefined;
