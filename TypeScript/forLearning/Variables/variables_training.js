@@ -54,3 +54,8 @@ undefined;
 var arr = [];
 console.log(arr[1]);
 undefined;
+// =============== literal型 =================
+// 1,2,3しか代入できない変数
+var X;
+//X = 1 -> OK
+//X = 100 -> エラー
